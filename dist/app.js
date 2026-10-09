@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const path_1 = __importDefault(require("path"));
 const customers_1 = __importDefault(require("./routes/customers"));
 const orders_1 = __importDefault(require("./routes/orders"));
 const upload_1 = __importDefault(require("./routes/upload"));
@@ -17,7 +16,6 @@ app.use((0, cors_1.default)({
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use(express_1.default.json());
-app.use(express_1.default.static(path_1.default.join(__dirname, "../test")));
 app.use("/api/customers", customers_1.default);
 app.use("/api/orders", orders_1.default);
 app.use("/upload", upload_1.default);
@@ -63,9 +61,5 @@ app.use("/testtoken", (req, res) => {
     res.status(200).json({
         token: jwttoken,
     });
-});
-// 3. กำหนดให้ Root Path ("/") เปิดไฟล์ index.html
-app.get("/", (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, "../test/index.html"));
 });
 //# sourceMappingURL=app.js.map

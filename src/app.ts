@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
+
 import customersRouter from "./routes/customers";
 import ordersRouter from "./routes/orders";
 import uploadRouter from "./routes/upload";
@@ -15,7 +15,7 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../test")));
+
 app.use("/api/customers", customersRouter);
 app.use("/api/orders", ordersRouter)
 app.use("/upload", uploadRouter);
@@ -68,9 +68,4 @@ app.use("/testtoken", (req, res) => {
   res.status(200).json({
     token: jwttoken,
   });
-});
-
-// 3. กำหนดให้ Root Path ("/") เปิดไฟล์ index.html
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../test/index.html"));
 });

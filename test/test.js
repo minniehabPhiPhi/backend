@@ -1,0 +1,20 @@
+const API_BASE_URL = 'http://localhost:3000/trip';
+const responseDiv = document.getElementById('response');
+
+function displayResponse(data) {
+    responseDiv.textContent = JSON.stringify(data, null, 2);
+}
+
+document.getElementById('getAllTrips').addEventListener('click', async () => {
+    try {
+        const response = await fetch(API_BASE_URL,{
+            headers: {
+                 Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`,
+            },
+        });
+        const data = await response.json();
+        displayResponse(data);
+    } catch (error) {
+        displayResponse({ error: error.message });
+    }
+});

@@ -1,0 +1,1 @@
+{"version":3,"file":"customers.d.ts","sourceRoot":"","sources":["../../src/routes/customers.ts"],"names":[],"mappings":"AAIA,MAAM,WAAW,mBAAmB;IAClC,UAAU,EAAE,MAAM,CAAC;IACnB,SAAS,EAAE,MAAM,CAAC;IAClB,YAAY,EAAE,MAAM,CAAC;IACrB,QAAQ,EAAE,MAAM,CAAC;IACjB,SAAS,EAAE,MAAM,CAAC;IAClB,cAAc,EAAE,MAAM,CAAC;CACxB;AAED,QAAA,MAAM,MAAM,4CAAW,CAAC;AAkIxB,eAAe,MAAM,CAAC"}

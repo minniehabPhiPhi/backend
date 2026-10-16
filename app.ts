@@ -3,7 +3,6 @@ import cors from "cors";
 import path from "path";
 import { router as customerRoutes } from "./src/routes/customerRoutes";
 import { router as orderRoutes } from "./src/routes/orderRoutes";
-import { router as uploadRoutes } from "./src/routes/uploadRoutes";
 import { generateToken, jwtAuthen, secret } from "./src/config/jwtauth";
 
 export const app = express();
@@ -29,7 +28,6 @@ app.use((err: any, _req: any, res: any, next: any) => {
 
 app.use("/api/customers", customerRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/upload", uploadRoutes);
 
 app.get("/", (_req, res) => {
     res.json({ message: "Lunch Delivery API running" });

@@ -18,19 +18,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// แจกไฟล์อัปโหลด
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// เส้นสำหรับขอ token ทดสอบ (ไม่ต้องแนบ token)
-app.use("/testtoken", (_req, res) => {
-    const payload = { username: "Aj.M" };
-    const jwttoken = generateToken(payload, secret);
-    res.status(200).json({ token: jwttoken });
-});
-
-// ตรวจ token ก่อนเข้า API หลัก
-app.use(jwtAuthen);
-
 // ดัก error กรณี token ปลอม / หมดอายุ
 app.use((err: any, _req: any, res: any, next: any) => {
     if (err.name === "UnauthorizedError") {

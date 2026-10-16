@@ -11,7 +11,7 @@ const upload_1 = __importDefault(require("./routes/upload"));
 const jwtauth_1 = require("./jwtauth");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: "http://127.0.0.1:5500", // ระบุโดเมนเว็บหน้าบ้านตรงนี้
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
@@ -20,31 +20,8 @@ app.use("/api/customers", customers_1.default);
 app.use("/api/orders", orders_1.default);
 app.use("/upload", upload_1.default);
 app.use("/uploads", express_1.default.static("uploads"));
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`API running at http://localhost:${PORT}`));
-const allowedOrigins = [
-    "http://127.0.0.1:5500",
-    "http://localhost:3000",
-    "https://your-production-frontend.com",
-];
-app.use((0, cors_1.default)({
-    origin: function (origin, callback) {
-        // เช็กหากว่าไม่มี origin (ยิงผ่าน Postman หรือเบื้องหลัง) หรือโดเมนตรงกับ whitelist
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        }
-        else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-}));
-app.use((0, cors_1.default)({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-}));
 app.use(jwtauth_1.jwtAuthen);
 // 2. ดักรับ Error กรณียิงตั๋วปลอม/ตั๋วหมดอายุ (ต้องไว้ถัดจาก jwtAuthen)
 app.use((err, req, res, next) => {

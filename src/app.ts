@@ -9,46 +9,19 @@ import { generateToken, jwtAuthen, secret } from "./jwtauth";
 const app = express();
 app.use(
   cors({
-    origin: "http://127.0.0.1:5500", // ระบุโดเมนเว็บหน้าบ้านตรงนี้
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 app.use(express.json());
 
-app.use("/api/customers", customersRouter);
-app.use("/api/orders", ordersRouter)
-app.use("/upload", uploadRouter);
-app.use("/uploads", express.static("uploads"));
-const PORT = 3000;
+app.use('/api/customers', customersRouter);
+app.use('/api/orders', ordersRouter);
+app.use('/upload', uploadRouter);
+app.use('/uploads', express.static('uploads'));
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`API running at http://localhost:${PORT}`));
-const allowedOrigins = [
-  "http://127.0.0.1:5500",
-  "http://localhost:3000",
-  "https://your-production-frontend.com",
-];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // เช็กหากว่าไม่มี origin (ยิงผ่าน Postman หรือเบื้องหลัง) หรือโดเมนตรงกับ whitelist
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
 
 app.use(jwtAuthen);
 

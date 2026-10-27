@@ -10,7 +10,7 @@
     "target": "ES2022",
     "lib": ["ES2022"],
     "types": ["node"],
-    "noEmit": true,
+    "noEmit": false,
     "allowJs": false,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
@@ -22,7 +22,7 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["server.ts", "app.ts", "src/**/*.ts"],
   "exclude": ["node_modules", "dist", "project_webAdv", "test",
     // ไฟล์ชุด MVC เดิมที่ไม่ได้ใช้แล้ว (เซิร์ฟเวอร์จริงเริ่มจาก server.ts นอก src)
     "src/server.ts", "src/routes/index.ts", "src/tests"]

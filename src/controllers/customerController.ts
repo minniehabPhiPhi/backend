@@ -80,7 +80,8 @@ export const createCustomer = async (req: Request, res: Response) => {
     try {
         const { first_name, last_name, phone_number, latitude, longitude, address_detail } = req.body;
 
-        if (!first_name || !last_name || !phone_number || !address_detail) {
+        // หน้าบ้านบังคับแค่ชื่อกับพิกัด ส่วนนามสกุล/เบอร์/ที่อยู่ส่งมาเป็นค่าว่างได้
+        if (!first_name || latitude == null || longitude == null || latitude === "" || longitude === "") {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
@@ -89,11 +90,11 @@ export const createCustomer = async (req: Request, res: Response) => {
 
         const [result] = await conn.query(sql, [
             first_name,
-            last_name,
-            phone_number,
+            last_name ?? "",
+            phone_number ?? "",
             latitude,
             longitude,
-            address_detail,
+            address_detail ?? "",
         ]);
 
         const insertResult = result as any;

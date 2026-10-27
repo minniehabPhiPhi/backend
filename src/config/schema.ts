@@ -1,4 +1,4 @@
-import { conn } from "./database";
+import { conn } from "./dbconnect";
 
 // สร้างตารางให้อัตโนมัติถ้ายังไม่มี (ไม่แตะข้อมูลเดิม)
 // คอลัมน์ตรงกับที่ repositories ใช้

@@ -4,11 +4,8 @@
   "description": "Lunch delivery API with MVC architecture",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "build": "tsc",
-    "start": "tsx src/server.ts",
-    "typecheck": "tsc --noEmit",
-    "test": "npm run typecheck && tsx --test src/tests/api.test.ts"
+    "start": "ts-node-dev server.ts",
+    "dev": "ts-node-dev --respawn server.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +18,7 @@
     "@types/multer": "^2.3.0",
     "@types/uuid": "^10.0.0",
     "cors": "^2.8.6",
+    "dotenv": "^18.0.2",
     "express": "^5.2.1",
     "express-jwt": "^8.5.1",
     "jsonwebtoken": "^9.0.3",

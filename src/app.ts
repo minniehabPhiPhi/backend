@@ -1,17 +1,30 @@
 import express from "express";
 import cors from "cors";
-import { corsOptions } from "./config/cors";
-import { errorHandler } from "./middlewares/error.middleware";
-import { jwtAuthen } from "./middlewares/jwt-auth.middleware";
-import router from "./routes";
+
+import customersRouter from "./routes/customers";
+import ordersRouter from "./routes/orders";
 
 const app = express();
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 app.use(express.json());
-app.use(router);
 
-// Keep the existing public API access; JWT checks apply to unmatched paths.
-app.use(jwtAuthen);
-app.use(errorHandler);
+app.use('/api/customers', customersRouter);
+app.use('/api/orders', ordersRouter);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`API running at http://localhost:${PORT}`));
 
-export default app;
+
+// 2. ดักรับ Error กรณียิงตั๋วปลอม/ตั๋วหมดอายุ (ต้องไว้ถัดจาก jwtAuthen)
+app.use((err: any, req: any, res: any, next: any) => {
+  if (err.name === "UnauthorizedError") {
+    res.status(err.status).json({ message: err.message });
+    return;
+  }
+  next(err);
+});

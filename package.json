@@ -1,15 +1,22 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Lunch delivery API with MVC architecture",
+  "main": "src/server.ts",
   "scripts": {
-    "dev": "ts-node-dev --respawn src/app.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "tsx src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck && tsx --test src/tests/api.test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=20.12.0"
+  },
   "dependencies": {
     "@types/multer": "^2.3.0",
     "@types/uuid": "^10.0.0",
@@ -19,6 +26,7 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.4.0",
     "mysql2": "^3.24.5",
+    "tsx": "^4.23.15",
     "uuid": "^14.0.2"
   },
   "devDependencies": {
@@ -27,7 +35,6 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.6.4",
     "ts-node-dev": "^2.0.0",
-    "tsx": "^4.23.15",
     "typescript": "^5.9.3"
   }
 }

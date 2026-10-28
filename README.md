@@ -66,6 +66,10 @@ npm test
 | POST | `/api/orders/seed` | สุ่มเพิ่มรายการสั่งซื้อ 20–30 รายการ |
 | PUT / DELETE | `/api/orders/:id` | แก้ไข / ลบรายการสั่งซื้อ |
 | DELETE | `/api/orders` | ลบรายการสั่งซื้อทั้งหมด |
+| GET | `/api/jobs` | ใบงานไรเดอร์ทั้งหมดของรอบล่าสุด |
+| GET | `/api/jobs/:code` | ใบงานใบเดียว เช่น `JOB-01` |
+| PUT | `/api/jobs` | แทนที่ใบงานทั้งหมด body: `{ "jobs": [...] }` (หน้าจัดเส้นทางส่งมาหลังคำนวณ) |
+| DELETE | `/api/jobs` | ล้างใบงานทั้งหมด |
 | POST | `/upload` | อัปโหลดแบบ multipart/form-data ด้วย field `file` |
 | GET | `/upload/:filename?download=true` | ดูไฟล์ / ดาวน์โหลด |
 | GET | `/uploads/:filename` | เปิดไฟล์แบบ static |

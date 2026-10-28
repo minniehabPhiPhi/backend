@@ -25,4 +25,12 @@ export async function ensureSchema() {
         REFERENCES \`customers\`(\`customer_id\`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
+  // ใบงานไรเดอร์ของรอบล่าสุด (รายละเอียดจุดส่งเก็บเป็น JSON ในคอลัมน์ data)
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS \`job_sheets\` (
+      \`job_code\` VARCHAR(20) PRIMARY KEY,
+      \`data\` LONGTEXT NOT NULL,
+      \`created_at\` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
 }

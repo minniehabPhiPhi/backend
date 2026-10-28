@@ -83,6 +83,8 @@ export const getNearbyOrders = async (req: Request, res: Response) => {
 };
 
 // 2.3 สุ่มออเดอร์ 20-30 รายการ (ส่ง amount มาด้วยก็ได้)
+// ลูกค้า 1 คน = 1 ออเดอร์: สุ่มลูกค้าไม่ซ้ำคน และข้ามลูกค้าที่มีออเดอร์รอส่ง (pending) อยู่แล้ว
+// ถ้าลูกค้าที่ว่างมีน้อยกว่าจำนวนที่สุ่มได้ จะสร้างเท่าจำนวนลูกค้าที่มี
 // POST /api/orders/seed
 export const seedOrders = async (req: Request, res: Response) => {
     let connection: PoolConnection | undefined;
@@ -98,17 +100,29 @@ export const seedOrders = async (req: Request, res: Response) => {
         }
 
         connection = await conn.getConnection();
-        const [customers]: any = await connection.query("SELECT `customer_id` FROM `customers`");
+        const [customers]: any = await connection.query(
+            `SELECT c.\`customer_id\` FROM \`customers\` c
+             WHERE NOT EXISTS (
+                 SELECT 1 FROM \`orders\` o
+                 WHERE o.\`customer_id\` = c.\`customer_id\` AND o.\`order_status\` = 'pending'
+             )`
+        );
         if (!customers || customers.length === 0) {
-            return res.status(400).json({ error: "No customers found in database" });
+            return res.status(400).json({ error: "No customers without a pending order" });
         }
 
-        const values: any[] = [];
-        for (let i = 0; i < amount; i++) {
-            const randomCust = customers[Math.floor(Math.random() * customers.length)].customer_id;
-            const randomQty = Math.floor(Math.random() * 3) + 1; // 1-3 กล่อง
-            values.push([randomQty, "pending", randomCust]);
+        // สลับลำดับลูกค้าแบบสุ่ม (Fisher-Yates) แล้วหยิบตามจำนวนที่ต้องการ -> ไม่มีลูกค้าซ้ำ
+        const ids: number[] = customers.map((c: any) => c.customer_id);
+        for (let i = ids.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [ids[i], ids[j]] = [ids[j]!, ids[i]!];
         }
+        const picked = ids.slice(0, amount);
+
+        const values: any[] = picked.map((customerId) => {
+            const randomQty = Math.floor(Math.random() * 3) + 1; // 1-3 กล่อง
+            return [randomQty, "pending", customerId];
+        });
 
         const placeholders = values.map(() => "(?, ?, ?)").join(", ");
         const [result] = await connection.query(
@@ -119,7 +133,7 @@ export const seedOrders = async (req: Request, res: Response) => {
         const insertResult = result as any;
         res.status(201).json({
             affected_row: insertResult.affectedRows,
-            message: `Successfully seeded ${amount} orders`,
+            message: `Successfully seeded ${values.length} orders`,
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
